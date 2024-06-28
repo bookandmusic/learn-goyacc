@@ -1,0 +1,34 @@
+package sql
+
+type SQLType int
+
+const (
+	STMT_DBSCALE_REQUEST_SLOW_SQL_TOP_N SQLType = iota
+	STMT_DBSCALE_SHOW_AUDIT_USER_LIST
+	STMT_DBSCALE_REQUEST_CLUSTER_ID
+	STMT_DBSCALE_REQUEST_NODE_INFO
+	STMT_DBSCALE_REQUEST_CLUSTER_INFO
+)
+
+type Stmt struct {
+	Text   string
+	Type   SQLType
+	Params []string
+}
+
+func (s *Stmt) Command() string {
+	switch s.Type {
+	case STMT_DBSCALE_REQUEST_SLOW_SQL_TOP_N:
+		return "DBSCALE SHOW SLOW SQL TOP " + s.Params[0]
+	case STMT_DBSCALE_SHOW_AUDIT_USER_LIST:
+		return "DBSCALE SHOW AUDIT USER LIST"
+	case STMT_DBSCALE_REQUEST_CLUSTER_ID:
+		return "DBSCALE REQUEST CLUSTER ID"
+	case STMT_DBSCALE_REQUEST_NODE_INFO:
+		return "DBSCALE REQUEST NODE INFO"
+	case STMT_DBSCALE_REQUEST_CLUSTER_INFO:
+		return "DBSCALE REQUEST CLUSTER INFO"
+	default:
+		return s.Text
+	}
+}
